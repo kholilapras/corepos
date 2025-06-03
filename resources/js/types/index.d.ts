@@ -41,3 +41,18 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Product {
+    id: number;
+    product_code: string;
+    product_name: string;
+    price: number;
+    stock: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface BreadcrumbItem {
+    title: string;
+    href: string;
+}
