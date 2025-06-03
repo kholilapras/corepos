@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
-use App\Models\product;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AccountController;
+use App\Models\Product;
+
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -15,6 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('products', ProductController::class);
+    Route::resource('cashier', TransactionController::class);
+    Route::resource('account', AccountController::class);
 });
 
 require __DIR__ . '/settings.php';
