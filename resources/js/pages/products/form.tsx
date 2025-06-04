@@ -32,11 +32,10 @@ export default function Form({ data, setData, onSubmit, processing, errors }: Pr
     };
 
     return (
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
-
+        <div className="w-full px-6 py-6">
             <form
                 onSubmit={handleSubmit}
-                className="w-full bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-md dark:shadow-lg space-y-6 transition-colors"
+                className="w-full bg-white dark:bg-stone-900 p-6 rounded-xl shadow-sm space-y-6"
             >
                 <div className="grid gap-2">
                     <Label htmlFor="product_code">Product Code</Label>
@@ -47,7 +46,6 @@ export default function Form({ data, setData, onSubmit, processing, errors }: Pr
                         onChange={handleChange}
                         required
                         placeholder="Enter product code"
-                        className="w-full"
                     />
                     {errors.product_code && (
                         <span className="text-red-500 text-sm">{errors.product_code}</span>
@@ -63,7 +61,6 @@ export default function Form({ data, setData, onSubmit, processing, errors }: Pr
                         onChange={handleChange}
                         required
                         placeholder="Enter product name"
-                        className="w-full"
                     />
                     {errors.product_name && (
                         <span className="text-red-500 text-sm">{errors.product_name}</span>
@@ -80,7 +77,6 @@ export default function Form({ data, setData, onSubmit, processing, errors }: Pr
                         onChange={handleChange}
                         required
                         placeholder="Enter product price"
-                        className="w-full"
                     />
                     {errors.price && (
                         <span className="text-red-500 text-sm">{errors.price}</span>
@@ -97,7 +93,6 @@ export default function Form({ data, setData, onSubmit, processing, errors }: Pr
                         onChange={handleChange}
                         required
                         placeholder="Enter product stock"
-                        className="w-full"
                     />
                     {errors.stock && (
                         <span className="text-red-500 text-sm">{errors.stock}</span>

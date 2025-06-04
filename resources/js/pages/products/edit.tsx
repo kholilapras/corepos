@@ -1,6 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import Form from './form';
+import type { BreadcrumbItem } from '@/types';
 
 interface Product {
     id: number;
@@ -13,6 +14,11 @@ interface Product {
 interface Props {
     product: Product;
 }
+
+const breadcrumbItems: BreadcrumbItem[] = [
+    { title: 'Products', href: route('products.index') },
+    { title: 'Edit Product', href: '#' },
+];
 
 export default function Edit({ product }: Props) {
     const { data, setData, put, processing, errors } = useForm({
@@ -29,10 +35,10 @@ export default function Edit({ product }: Props) {
     };
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbItems}>
             <Head title="Edit Product" />
-            <div className="max-w-4xl mx-auto py-10">
-                <h1 className="text-2xl font-bold mb-6">Edit Product</h1>
+            <div className="w-full px-6 py-10">
+                <h1 className="text-3xl font-bold mb-6">Edit Product</h1>
                 <Form
                     data={data}
                     setData={setData}

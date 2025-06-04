@@ -22,7 +22,7 @@ interface User {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'account',
+        title: 'Account',
         href: '/account',
     },
 ];

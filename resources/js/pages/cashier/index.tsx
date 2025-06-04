@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
+import { Trash2 } from 'lucide-react';
+
 
 interface Product {
     id: number;
@@ -25,12 +27,10 @@ interface CartItem {
 export default function Cashier({ products }: Props) {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [discount, setDiscount] = useState<number>(0);
     const [cashReceived, setCashReceived] = useState<number>(0);
 
     const { data, setData, post } = useForm({
         items: [] as { product_id: number; quantity: number }[],
-        discount: 0,
         cash: 0,
     });
 
@@ -60,6 +60,10 @@ export default function Cashier({ products }: Props) {
         });
     };
 
+    const removeFromCart = (productId: number) => {
+        setCart((prevCart) => prevCart.filter(item => item.product_id !== productId));
+    };
+
     const handleCheckout = () => {
         if (cart.length === 0) {
             alert('Cart is empty.');
@@ -71,7 +75,6 @@ export default function Cashier({ products }: Props) {
                 product_id: item.product_id,
                 quantity: item.quantity,
             })),
-            discount: discount,
             cash: cashReceived,
         });
 
@@ -79,8 +82,7 @@ export default function Cashier({ products }: Props) {
     };
 
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const discountedTotal = totalPrice - (totalPrice * (discount / 100));
-    const change = cashReceived - discountedTotal;
+    const change = cashReceived - totalPrice;
 
     const filteredProducts = products.filter(product =>
         product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -135,11 +137,19 @@ export default function Cashier({ products }: Props) {
                         ) : (
                             <ul className="space-y-2">
                                 {cart.map((item, index) => (
-                                    <li key={index} className="flex justify-between border-b pb-1">
-                                        <span>
-                                            {item.name} × {item.quantity}
-                                        </span>
-                                        <span>Rp {item.price * item.quantity}</span>
+                                    <li key={index} className="flex justify-between items-center border-b pb-1">
+                                        <span>{item.name} × {item.quantity}</span>
+                                        <div className="flex items-center space-x-2">
+                                            <span>Rp {item.price * item.quantity}</span>
+                                            <Button
+                                                variant="destructive"
+                                                size="icon"
+                                                onClick={() => removeFromCart(item.product_id)}
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </Button>
+
+                                        </div>
                                     </li>
                                 ))}
                                 <li className="flex justify-between font-bold pt-3 border-t">
@@ -148,19 +158,6 @@ export default function Cashier({ products }: Props) {
                                 </li>
                             </ul>
                         )}
-
-                        {/* Discount Input */}
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium mb-1">Discount (%)</label>
-                            <input
-                                type="number"
-                                min={0}
-                                max={100}
-                                value={discount}
-                                onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:border-blue-300"
-                            />
-                        </div>
 
                         {/* Cash Input */}
                         <div className="mt-4">
@@ -174,14 +171,8 @@ export default function Cashier({ products }: Props) {
                             />
                         </div>
 
-                        {/* Total After Discount */}
-                        <div className="flex justify-between mt-4 font-medium">
-                            <span>Total after Discount:</span>
-                            <span>Rp {discountedTotal}</span>
-                        </div>
-
                         {/* Change */}
-                        <div className="flex justify-between mt-1 font-medium">
+                        <div className="flex justify-between mt-4 font-medium">
                             <span>Change:</span>
                             <span className={change < 0 ? 'text-red-500' : ''}>
                                 Rp {change < 0 ? 0 : change}
